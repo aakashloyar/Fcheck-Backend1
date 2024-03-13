@@ -17,7 +17,8 @@ router.post("/signup",async (req,res)=>{
         const newUser=new User({email,password});
         await newUser.save();
         const payload = {
-            email: newUser.email
+            email: newUser.email,
+            role:'user'
         };
         const token=jwt.sign(payload,secret,{expiresIn:'1hr'})
         res.status(200).json({message:"user created succesfully with token="+token})
@@ -38,7 +39,8 @@ router.post("/signin",async(req,res)=>{
             return;
         }
         const payload = {
-            email: user.email
+            email: user.email,
+            role:'user'
         };
         const token = jwt.sign(payload, secret, { expiresIn: '1h' });
         res.json({ message: 'Logged in successfully', token });

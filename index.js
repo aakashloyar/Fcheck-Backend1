@@ -9,6 +9,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 app.use("/user",router);
+app.use("/admin",admin);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

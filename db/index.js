@@ -13,8 +13,13 @@ const courseSchema = new mongoose.Schema({
   imageLink: String,
   published: Boolean
 });
+const adminSchema = new mongoose.Schema({
+  email: String,
+  password: String
+});
 const Course = mongoose.model('Course', courseSchema);
 const User = mongoose.model('User', UserSchema);
+const Admin = mongoose.model('User', UserSchema);
 module.exports ={
-  User, Course
+  User, Course,Admin
 }
