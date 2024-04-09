@@ -1,12 +1,14 @@
-const express = require('express')
+import mongoose from "mongoose"
+import express from "express"
 const router=express.Router();
-const jwt=require('jsonwebtoken');
-const {User,Course}=require('../db/index');
-const secret = process.env.SECRET;
-const { authenticate } = require('../middleware/auth');
+import jwt from 'jsonwebtoken'
+import  {User,Course} from '../db/index';
+import { Request,Response,NextFunction } from "express";
+const secret = process.env.SECRET||"";
+import { authenticate } from '../middleware/auth';
 router.use(express.json());
 
-router.post("/signup",async (req,res)=>{
+router.post("/signup",async (req:Request,res:Response)=>{
     try {
         const {email,password}=req.body;
         const user=await User.findOne({email});
@@ -24,13 +26,13 @@ router.post("/signup",async (req,res)=>{
         res.status(200).json({message:"user created succesfully with token="+token})
         console.log(token);
         console.log("created succesfully");
-    } catch(error) {
+    } catch(error:any) {
         res.status(500).json({message:"server error"})
         console.error(error.message);
     }
     
 })
-router.post("/signin",async(req,res)=>{
+router.post("/signin",async(req:Request,res:Response)=>{
     try{
         const {email,password}=req.body;
         const user=await User.findOne({email,password});
@@ -44,42 +46,48 @@ router.post("/signin",async(req,res)=>{
         };
         const token = jwt.sign(payload, secret, { expiresIn: '1h' });
         res.json({ message: 'Logged in successfully', token });
-    }catch(error) {
+    }catch(error:any) {
         res.status(500).json({message:"server error"})
         console.error(error.message);
     }
 })
-router.post('/courses',authenticate,async (req,res)=>{
+router.post('/courses',authenticate,async (req:Request,res:Response)=>{
     try{
         const courses=await Course.find({published:true});
         res.json({courses})
-    } catch(err) {
+    } catch(err:any) {
         res.status(500).json({message:"server error"})
-        console.error(error.message);
+        console.error(err.message);
     }  
 })
-router.post('/courses/:courseId',authenticate,async(req,res,next)=>{
-    const course=await Course.findById(req.params.courseId);
-    if(course) {
-        const user=User.findOne(req.user.email);
-        if(user) {
-            user.purchasedCourses.push(course);
+router.post('/courses/:courseId', authenticate, async (req: Request, res: Response, next: NextFunction) => {
+    const courseId=req.params.courseId;
+    const course = await Course.findById(courseId);
+    
+    if (typeof courseId==="string") {
+        const userId = req.headers["userId"];
+        const user = await User.findOne({ _id: userId });
+
+        if (user) {
+            user.purchasedCourses.push(new mongoose.Types.ObjectId(courseId)); // Push courseId instead of the whole course document
             await user.save();
-            res.json('course purchased successfully');
+            return res.json('Course purchased successfully');
         } else {
-            res.status(403).json({message:'User not found'});
+            return res.status(403).json({ message: 'User not found' });
         }
+    } else {
+        return res.status(404).json({ message: 'Course not found' });
     }
-    else {
-        res.send(404).json({message:'Course not found'});
-    }
-})
-router.post('purchasedCourses',authenticate,async (req,res)=>{
-    const user = await User.findOne({ username: req.user.username });
+});
+
+
+router.post('purchasedCourses',authenticate,async (req:Request,res:Response)=>{
+    const userId=req.headers["userId"];
+    const user=await User.findOne({_id:userId});
     if (user) {
         res.json({ purchasedCourses: user.purchasedCourses || [] });
     } else {
         res.status(403).json({ message: 'User not found' });
     }
 })
-module.exports =router
+export default router
