@@ -25,3 +25,19 @@ You can also just flip noImplicitAny to false in tsconfig, but that's cheating.
 You will see req.userId complains everywhere, and rightfully so. We've added userId key to an object that doesn't expect it. Fix this by sending over the id via the headers.
 Create types for the inputs to all routes (for eg User, Todo) and use them when u decode the body.
 Try running tsc now, you should see no errors.
+
+
+
+
+Aws:
+ssh -i Fcheck-key-pair.pem ubuntu@ec2-44-203-250-210.compute-1.amazonaws.com
+//it will not work as in aws the permission are very restrictive 
+//it means who can read write with your project
+ls -ltr Fcheck-key-pair.pem  
+to see who have which permission
+
+chmod 600 ./Fcheck-key-pair.pem
+//this command remove read permission for some of the users
+
+//now run this command
+ssh -i Fcheck-key-pair.pem ubuntu@ec2-44-203-250-210.compute-1.amazonaws.com
