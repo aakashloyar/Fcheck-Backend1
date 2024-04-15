@@ -30,6 +30,16 @@ Try running tsc now, you should see no errors.
 
 
 Aws:
+lauch an instance 
+then check security 
+inbound outbound
+inbound is for which which ip can access your website
+outbound is which which ip your website can access
+
+so we need to add some inbound ip out bound is automatically added
+so add 443 with ivp4 and ivp6 similarly for 80 and 3000
+443 is for https 80 is for http
+
 ssh -i Fcheck-key-pair.pem ubuntu@ec2-44-203-250-210.compute-1.amazonaws.com
 //it will not work as in aws the permission are very restrictive 
 //it means who can read write with your project
@@ -41,3 +51,49 @@ chmod 600 ./Fcheck-key-pair.pem
 
 //now run this command
 ssh -i Fcheck-key-pair.pem ubuntu@ec2-44-203-250-210.compute-1.amazonaws.com
+
+
+now are cloned to ec2 instance similary like git repo
+
+//now you clone your git code to ec2 using 
+git clone https://github.com/aakashloyar/Fcheck-Backend1.git
+
+
+to run node on your ubuntu machine 
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+
+after running copy the last 3 lines of response in terminal
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+run
+nvm install node
+npm install
+node index.js
+npm
+
+vi index.js esc
+to edit a file 
+:wq 
+to save and exit
+
+sudo lsof -i :3000
+this will give pid of running process
+sudo kill pid
+this will end the process
+
+npm i -g pm2
+pm2 start index.js
+pm2 kill
+
+rm file name
+delete the file
+*****how to update
+
+1. ssh into machine
+2. pull your latest code
+3. stop existing process
+4. re-build the code
+5. re run the code
