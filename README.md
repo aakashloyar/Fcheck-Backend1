@@ -97,3 +97,24 @@ delete the file
 3. stop existing process
 4. re-build the code
 5. re run the code
+
+
+
+***to make it short
+we have make deploy.sh file and run that by source ./deploy.sh command
+so now only 2 command
+1 is ssh 
+2 is running deploy.sh
+
+now we can do this in 1 command 
+by pasting above 2 command in one file script-local.sh and run source ./script-deploy.sh
+
+echo xxx 
+put xxx
+
+
+
+****origin
+1 project can be cloned to different repos
+so origin is used as convention to push pull or whatever to your correct repo
+suppose for 1 repo origin is origin and for other origin is origin2
