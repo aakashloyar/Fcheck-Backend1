@@ -109,8 +109,14 @@ so now only 2 command
 now we can do this in 1 command 
 by pasting above 2 command in one file script-local.sh and run source ./script-deploy.sh
 
-echo xxx 
-put xxx
+
+**ci/cd
+using it whatever we push on github it will automatically deployed
+so now you donot have to run any command to deploy
+
+
+**echo xxx keyfile
+means put xxx in keyfile
 
 
 
@@ -118,3 +124,10 @@ put xxx
 1 project can be cloned to different repos
 so origin is used as convention to push pull or whatever to your correct repo
 suppose for 1 repo origin is origin and for other origin is origin2
+
+
+****
+your secrets in git
+store in settings/secret and varible/actions/add new repo secret 
+give name to it 
+and paste the secret for eg here whatever in Fcheck-key-pair.pem
