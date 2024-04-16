@@ -131,3 +131,21 @@ your secrets in git
 store in settings/secret and varible/actions/add new repo secret 
 give name to it 
 and paste the secret for eg here whatever in Fcheck-key-pair.pem
+
+
+
+***
+cat ~/.ssh/known_hosts
+gives the list of known hosts
+
+
+**
+ssh-keyscan ec2-44-203-250-210.compute-1.amazonaws.com >> known_hosts
+this will add new known_hosts file and put the required things
+just run this in your current git folder
+
+**
+mkdir -p ~/.ssh
+cp known_hosts ~/.ssh/known_hosts
+these lines 1st create ssh dir
+new put known host in it
